@@ -4,12 +4,23 @@ from aiogram.dispatcher.filters import Text
 import text
 import game
 import random
+from keyboards import kb_main_menu
+from datetime import datetime
 
 
 @dp.message_handler(commands=['start', 'старт'])
 async def mes_start(message: Message):
     await message.answer(text=f'{message.from_user.first_name}'
-                         f'{text.greeting}')
+                         f'{text.greeting}',
+                         reply_markup=kb_main_menu)
+    user = []
+    user.append(datetime.now())
+    user.append(message.from_user.full_name)
+    user.append(message.from_user.id)
+    user.append(message.from_user.username)
+    user = list(map(str,user))
+    with open('text.txt', 'a', encoding='UTF-8') as data:
+        data.write(':'.join(user)+'\n')
 
 
 @dp.message_handler(commands=['new_game'])
